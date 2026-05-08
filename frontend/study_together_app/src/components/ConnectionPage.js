@@ -13,7 +13,7 @@ function StudyPage() {
 
   const loadProfiles = async () => {
     try {
-      const res = await api.get("/api/profiles");
+      const res = await api.get("/profiles");
 
       // ❗ remove self
       const myEmail = localStorage.getItem("email");
@@ -30,7 +30,7 @@ function StudyPage() {
   try {
     const myEmail = localStorage.getItem("email");
 
-    await api.post(`/api/connections/send?sender=${myEmail}&receiver=${email}`);
+    await api.post(`/connections/send?sender=${myEmail}&receiver=${email}`);
 
     setRequests(prev => ({
       ...prev,

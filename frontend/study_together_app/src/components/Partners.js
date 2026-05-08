@@ -6,7 +6,7 @@ import "../styles/partners.css";
 function Partners() {
   const [requests, setRequests] = useState([]);
   const [connections, setConnections] = useState([]);
-  const [toast, setToast] = useState(""); // ✅ NEW
+  const [toast, setToast] = useState(""); 
 
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ function Partners() {
   const loadRequests = async () => {
     try {
       const myEmail = localStorage.getItem("email");
-      const res = await api.get(`/api/connections/requests?email=${myEmail}`);
+      const res = await api.get(`/connections/requests?email=${myEmail}`);
       setRequests(res.data);
     } catch (err) {
       console.log(err);
@@ -28,7 +28,7 @@ function Partners() {
   const loadConnections = async () => {
     try {
       const myEmail = localStorage.getItem("email");
-      const res = await api.get(`/api/connections?email=${myEmail}`);
+      const res = await api.get(`/connections?email=${myEmail}`);
       setConnections(res.data);
     } catch (err) {
       console.log(err);
@@ -38,10 +38,9 @@ function Partners() {
   // ✅ Accept request (UPDATED)
   const acceptRequest = async (req) => {
     try {
-      await api.post(`/api/connections/accept/${req.id}`);
+      await api.post(`/connections/accept/${req.id}`);
 
-      // ❌ remove alert
-      // alert("Connected ✅");
+      
 
       // ✅ simple clean toast
       setToast("Connected successfully 🎉");

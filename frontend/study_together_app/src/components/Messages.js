@@ -66,7 +66,7 @@ function Messages() {
     try {
 
       const res =
-        await api.get(`/api/messages/${roomId}`);
+        await api.get(`/messages/${roomId}`);
 
       setMessages(res.data);
 
@@ -102,7 +102,7 @@ function Messages() {
         localStorage.getItem("email");
 
       await api.post(
-        "/api/messages",
+        "/messages",
         {
           roomId: room.id,
           text: input,
@@ -151,7 +151,7 @@ function Messages() {
       );
 
       await api.post(
-        "/api/messages/file",
+        "/messages/file",
         formData,
         {
           headers: {
@@ -180,7 +180,7 @@ function Messages() {
     try {
 
       await api.delete(
-        `/api/messages/${id}`
+        `/messages/${id}`
       );
 
       fetchMessages(room.id);

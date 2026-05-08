@@ -47,7 +47,7 @@ function Conversation() {
     try {
 
       const res =
-        await api.get("/api/profile/all");
+        await api.get("/profile/all");
 
       const user =
         res.data.find(p => p.email === email);
@@ -91,7 +91,7 @@ function Conversation() {
     try {
 
       await api.post(
-        "/api/private-messages/send",
+        "/private-messages/send",
         {
           senderEmail: myEmail,
           receiverEmail: email,
@@ -130,7 +130,7 @@ function Conversation() {
       formData.append("receiverEmail", email);
 
       await api.post(
-        "/api/private-messages/send-file",
+        "/private-messages/send-file",
         formData,
         {
           headers: {
@@ -158,7 +158,7 @@ function Conversation() {
     try {
 
       await api.delete(
-        `/api/private-messages/delete/${id}`
+        `/private-messages/delete/${id}`
       );
 
       loadMessages();

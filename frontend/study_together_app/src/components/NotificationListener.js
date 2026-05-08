@@ -23,8 +23,7 @@ function NotificationListener() {
       brokerURL: undefined,
 
       webSocketFactory: () =>
-        new SockJS("http://localhost:8080/ws"),
-
+       new SockJS("https://study-together-app-1.onrender.com/ws"),
       reconnectDelay: 5000,
 
       heartbeatIncoming: 4000,

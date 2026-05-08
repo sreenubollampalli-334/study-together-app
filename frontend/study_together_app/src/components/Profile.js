@@ -54,7 +54,7 @@ function Profile() {
     const profileData = { name, email, course, goal, skills, image };
 
     try {
-      await api.post("/api/profile", profileData); // 🔥 FIX
+      await api.post("/profile", profileData); // 🔥 FIX
 
       localStorage.setItem("userProfile", JSON.stringify(profileData));
       window.dispatchEvent(new Event("profileUpdated"));
@@ -79,7 +79,7 @@ function Profile() {
   }
 
   try {
-    await api.post("/api/feedback", { feedback, rating });
+    await api.post("/feedback", { feedback, rating });
 
     setFeedback("");
     setRating(0);

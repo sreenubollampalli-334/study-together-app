@@ -35,7 +35,7 @@ function Rooms() {
 
     try {
 
-      const res = await api.get("/api/rooms");
+      const res = await api.get("/rooms");
 
       setRooms(res.data);
 
@@ -55,7 +55,7 @@ function Rooms() {
 
     try {
 
-      await api.post("/api/rooms", {
+      await api.post("/rooms", {
         name: roomName,
       });
 
@@ -79,7 +79,7 @@ function Rooms() {
 
     try {
 
-      const res = await api.post(`/api/rooms/join/${room.id}`);
+      const res = await api.post(`/rooms/join/${room.id}`);
 
       console.log(res.data);
 
@@ -92,7 +92,7 @@ function Rooms() {
       }
 
       // ✅ FETCH UPDATED ROOM
-      const updatedRooms = await api.get("/api/rooms");
+      const updatedRooms = await api.get("/rooms");
 
       setRooms(updatedRooms.data);
 
@@ -125,7 +125,7 @@ function Rooms() {
 
     try {
 
-      const res = await api.delete(`/api/rooms/${room.id}`);
+      const res = await api.delete(`/rooms/${room.id}`);
 
       if (res.data !== "Room deleted") {
 
