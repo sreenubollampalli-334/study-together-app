@@ -31,8 +31,13 @@ function Conversation() {
 
     loadMessages();
 
+    // ✅ AUTO REFRESH CHAT
     const interval =
-      setInterval(loadMessages, 2000);
+      setInterval(() => {
+
+        loadMessages();
+
+      }, 2000);
 
     return () => clearInterval(interval);
 
@@ -50,13 +55,18 @@ function Conversation() {
         await api.get("/profile/all");
 
       const user =
-        res.data.find(p => p.email === email);
+        res.data.find(
+          p => p.email === email
+        );
 
       setPartner(user);
 
     } catch (err) {
 
-      console.log("ERROR:", err);
+      console.log(
+        "PARTNER ERROR:",
+        err
+      );
     }
   };
 
@@ -69,14 +79,25 @@ function Conversation() {
     try {
 
       const res = await api.get(
-        `/api/private-messages?user1=${myEmail}&user2=${email}`
+
+        `/private-messages?user1=${myEmail}&user2=${email}`
+
+      );
+
+      // ✅ DEBUG
+      console.log(
+        "PRIVATE CHAT:",
+        res.data
       );
 
       setMessages(res.data);
 
     } catch (err) {
 
-      console.log("Load messages error:", err);
+      console.log(
+        "LOAD MESSAGE ERROR:",
+        err.response || err
+      );
     }
   };
 
@@ -91,21 +112,30 @@ function Conversation() {
     try {
 
       await api.post(
+
         "/private-messages/send",
+
         {
           senderEmail: myEmail,
+
           receiverEmail: email,
+
           content: text
         }
       );
 
+      // ✅ CLEAR INPUT
       setText("");
 
+      // ✅ REFRESH CHAT
       loadMessages();
 
     } catch (err) {
 
-      console.log("Send error:", err);
+      console.log(
+        "SEND ERROR:",
+        err.response || err
+      );
     }
   };
 
@@ -115,37 +145,57 @@ function Conversation() {
 
   const sendFile = async (fileToSend) => {
 
-    const file = fileToSend || selectedFile;
+    const file =
+      fileToSend || selectedFile;
 
     if (!file) return;
 
     try {
 
-      const formData = new FormData();
+      const formData =
+        new FormData();
 
-      formData.append("file", file);
+      formData.append(
+        "file",
+        file
+      );
 
-      formData.append("senderEmail", myEmail);
+      formData.append(
+        "senderEmail",
+        myEmail
+      );
 
-      formData.append("receiverEmail", email);
+      formData.append(
+        "receiverEmail",
+        email
+      );
 
       await api.post(
+
         "/private-messages/send-file",
+
         formData,
+
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type":
+              "multipart/form-data",
           },
         }
       );
 
+      // ✅ CLEAR FILE
       setSelectedFile(null);
 
+      // ✅ REFRESH
       loadMessages();
 
     } catch (err) {
 
-      console.log("FILE ERROR:", err);
+      console.log(
+        "FILE ERROR:",
+        err.response || err
+      );
     }
   };
 
@@ -158,14 +208,19 @@ function Conversation() {
     try {
 
       await api.delete(
+
         `/private-messages/delete/${id}`
+
       );
 
       loadMessages();
 
     } catch (err) {
 
-      console.log("DELETE ERROR:", err);
+      console.log(
+        "DELETE ERROR:",
+        err.response || err
+      );
     }
   };
 
@@ -179,7 +234,9 @@ function Conversation() {
 
         <button
           className="back-btn"
-          onClick={() => navigate("/partners")}
+          onClick={() =>
+            navigate("/partners")
+          }
         >
           ⬅ Back
         </button>
@@ -191,11 +248,15 @@ function Conversation() {
           </div>
 
           <div>
-            <h4>{partner?.name || email}</h4>
+
+            <h4>
+              {partner?.name || email}
+            </h4>
 
             <span className="status">
               online
             </span>
+
           </div>
 
         </div>
@@ -213,9 +274,11 @@ function Conversation() {
       <div className="chat-body">
 
         {messages.length === 0 && (
+
           <p className="empty">
             No messages yet
           </p>
+
         )}
 
         {messages.map((msg, i) => (
@@ -231,7 +294,9 @@ function Conversation() {
 
             {/* TEXT */}
 
-            <div>{msg.content}</div>
+            <div>
+              {msg.content}
+            </div>
 
             {/* FILE */}
 
@@ -314,7 +379,9 @@ function Conversation() {
               setSelectedFile(file);
 
               setTimeout(() => {
+
                 sendFile(file);
+
               }, 100);
             }}
           />

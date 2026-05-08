@@ -5,16 +5,50 @@ function Achievements() {
 
   const [badges, setBadges] = useState([]);
 
-  const user = JSON.parse(localStorage.getItem("userProfile"));
-  const email = user?.email;
+  // ✅ FIXED
+  const email = localStorage.getItem("email");
 
-  useEffect(() => {
+ useEffect(() => {
+
+  const loadAchievements = () => {
+
     if (email) {
-      api.get(`/achievements/all?email=${email}`)
-        .then(res => setBadges(res.data))
-        .catch(err => console.error(err));
+
+      api.get(
+        `/achievements/all?email=${email}`
+      )
+
+      .then(res => {
+
+        setBadges(res.data);
+
+      })
+
+      .catch(err => {
+
+        console.error(err);
+      });
     }
-  }, [email]);
+  };
+
+  // INITIAL LOAD
+  loadAchievements();
+
+  // 🔥 AUTO REFRESH
+  window.addEventListener(
+    "streakUpdated",
+    loadAchievements
+  );
+
+  return () => {
+
+    window.removeEventListener(
+      "streakUpdated",
+      loadAchievements
+    );
+  };
+
+}, [email]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -47,7 +81,9 @@ function Achievements() {
             {/* 🔥 PROGRESS BAR */}
             {!b.unlocked && (
               <div style={{ marginTop: "10px" }}>
-                <small>{b.progress} / {b.requiredStreak}</small>
+                <small>
+                  {b.progress} / {b.requiredStreak}
+                </small>
 
                 <div style={{
                   height: "6px",
