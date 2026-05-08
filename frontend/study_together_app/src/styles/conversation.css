@@ -1,0 +1,273 @@
+
+/* 🌌 PAGE BACKGROUND */
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* 🔥 HEADER */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(10px);
+  color: white;
+
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* 🔙 BACK BUTTON */
+.back-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* 👤 USER */
+.chat-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.status {
+  font-size: 12px;
+  color: #22c55e;
+}
+
+/* ⚠️ WARNING */
+.chat-warning {
+  text-align: center;
+  padding: 6px;
+  font-size: 12px;
+  color: #facc15;
+  background: rgba(255,255,255,0.05);
+}
+
+/* 💬 CHAT BODY */
+.chat-body {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Scrollbar */
+.chat-body::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: #64748b;
+  border-radius: 10px;
+}
+
+/* 💬 MESSAGE BASE */
+.msg {
+  padding: 10px 14px;
+  border-radius: 14px;
+  max-width: 60%;
+  font-size: 14px;
+  animation: fadeIn 0.2s ease-in;
+}
+
+/* 🧑 MY MESSAGE */
+.my-msg {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* 👤 OTHER MESSAGE */
+.other-msg {
+  align-self: flex-start;
+  background: #1e293b;
+  color: #e2e8f0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* ✨ ANIMATION */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ✍️ INPUT BAR */
+.chat-input {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+/* INPUT FIELD */
+.chat-input input {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  background: #1e293b;
+  color: white;
+}
+
+/* SEND BUTTON */
+.chat-input button {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border: none;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-input button:hover {
+  transform: scale(1.1);
+}
+
+/* EMPTY TEXT */
+.empty {
+  text-align: center;
+  color: #94a3b8;
+}
+
+/* =========================
+   PRIVATE FILE SHARE
+========================= */
+
+.private-file-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 8px;
+  padding: 8px 12px;
+
+  background: rgba(255,255,255,0.1);
+
+  border-radius: 10px;
+
+  color: white;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  transition: 0.2s;
+}
+
+.private-file-link:hover {
+  background: rgba(255,255,255,0.2);
+
+  transform: scale(1.02);
+}
+
+/* FILE BUTTON */
+
+.private-file-btn {
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  color: white;
+
+  transition: 0.2s;
+}
+
+.private-file-btn:hover {
+  transform: scale(1.08);
+}
+
+/* FILE PREVIEW */
+
+.private-selected-file {
+  position: absolute;
+
+  bottom: 80px;
+  left: 20px;
+
+  background: rgba(15, 23, 42, 0.95);
+
+  color: white;
+
+  padding: 10px 14px;
+
+  border-radius: 12px;
+
+  font-size: 13px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+
+  max-width: 250px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* DELETE BUTTON */
+
+.delete-msg-btn {
+  margin-top: 8px;
+
+  background: rgba(255,255,255,0.08);
+
+  border: none;
+
+  color: #f87171;
+
+  padding: 6px 10px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  transition: 0.2s;
+}
+
+.delete-msg-btn:hover {
+  background: rgba(239,68,68,0.2);
+
+  transform: scale(1.05);
+}

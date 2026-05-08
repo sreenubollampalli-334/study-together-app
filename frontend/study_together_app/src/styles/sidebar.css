@@ -1,0 +1,188 @@
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 70px;
+  background: #0F172A;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+
+  /* NEW */
+  justify-content: flex-start;
+  position: relative;
+}
+
+/* ================= ITEM ================= */
+.sidebar-item {
+  position: relative;
+  margin: 20px 0;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 12px;
+  transition: 0.3s ease;
+}
+
+.icon {
+  font-size: 22px;
+}
+
+/* ACTIVE */
+.sidebar-item.active {
+  background: #4F8EF7;
+}
+
+/* HOVER */
+.sidebar-item:hover {
+  background: #1E293B;
+  transform: scale(1.05);
+}
+
+/* LABEL (TOOLTIP) */
+.label {
+  position: absolute;
+  left: 70px;
+  background: #111827;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: 0.3s;
+  white-space: nowrap;
+}
+
+.sidebar-item:hover .label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ================= PROFILE (BOTTOM) ================= */
+.sidebar-profile {
+  margin-top: auto;
+  margin-bottom: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.sidebar-profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #4F8EF7;
+  transition: 0.3s;
+}
+
+.sidebar-profile img:hover {
+  transform: scale(1.1);
+}
+
+/* ================= THEME TOGGLE ================= */
+.theme-toggle {
+  width: 60px;
+  height: 30px;
+  background: #E2E8F0;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#FDB813,#F59E0B);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  transition: 0.3s;
+}
+
+.toggle-circle.dark {
+  background: linear-gradient(135deg,#38BDF8,#0EA5E9);
+  transform: translateX(30px);
+}
+
+/* ================= TIMER ================= */
+.timer-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: linear-gradient(135deg,#f1f5f9,#e2e8f0);
+  padding: 8px 15px;
+  border-radius: 12px;
+
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.timer-input {
+  width: 55px;
+  padding: 6px;
+  border-radius: 8px;
+  border: none;
+  text-align: center;
+  font-weight: bold;
+  outline: none;
+}
+
+.timer-display {
+  font-weight: bold;
+  color: #2563EB;
+  font-size: 15px;
+}
+
+.timer-btn {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  transition: 0.3s;
+}
+
+.timer-btn.start {
+  background: linear-gradient(135deg,#22C55E,#16A34A);
+}
+
+.timer-btn.stop {
+  background: linear-gradient(135deg,#EF4444,#DC2626);
+}
+
+.timer-btn.reset {
+  background: linear-gradient(135deg,#64748B,#475569);
+}
+
+.timer-btn:hover {
+  transform: scale(1.05);
+}
+
+.timer-stat {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f97316;
+}
+
+/* ================= PROGRESS BAR ================= */
+.progress-container {
+  width: 100%;
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 10px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(135deg,#4F8EF7,#22d3ee);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}

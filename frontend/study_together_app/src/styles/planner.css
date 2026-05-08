@@ -1,0 +1,247 @@
+.planner-main {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+  color: white;
+}
+
+/* DAYS */
+.date-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.date {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+}
+
+.date.active {
+  background: white;
+  color: #7c3aed;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tab {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.tab.active {
+  opacity: 1;
+  font-weight: bold;
+}
+
+/* TASK CARD */
+.task-card {
+  background: white;
+  color: black;
+  padding: 15px;
+  border-radius: 16px;
+  margin-top: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: 0.3s;
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
+}
+
+.task-card.complete {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+/* FOOTER */
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+/* PRIORITY */
+.priority {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.priority.high { background:#ffe5e5; color:red; }
+.priority.medium { background:#fff4e5; color:orange; }
+.priority.low { background:#e5ffe5; color:green; }
+
+/* ACTIONS */
+.task-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.task-actions button {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.task-actions button:first-child {
+  background: #4caf50;
+  color: white;
+}
+
+.task-actions button:last-child {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* FAB */
+.fab {
+  position: fixed;
+  bottom: 80px;
+  right: 40px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg,#4F8EF7,#A78BFA);
+  color: white;
+  font-size: 28px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 9999;
+}
+
+/* MODAL */
+/* MODAL BACKGROUND */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MODAL CARD */
+.modal-card {
+  background: linear-gradient(135deg, #ffffff, #f3f4ff);
+  padding: 25px;
+  border-radius: 20px;
+  width: 320px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  animation: popIn 0.3s ease;
+}
+
+/* POP ANIMATION */
+@keyframes popIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* TITLE */
+.modal-card h3 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* INPUT FIELDS */
+.modal-card input,
+.modal-card select {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  outline: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+/* FOCUS EFFECT */
+.modal-card input:focus,
+.modal-card select:focus {
+  border-color: #7c3aed;
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+  transform: scale(1.02);
+}
+
+/* PRIORITY COLORS INSIDE SELECT */
+.modal-card select {
+  font-weight: 600;
+}
+
+.modal-card select option[value="High"] {
+  color: red;
+}
+.modal-card select option[value="Medium"] {
+  color: orange;
+}
+.modal-card select option[value="Low"] {
+  color: green;
+}
+
+/* BUTTONS */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+/* ADD BUTTON */
+.modal-actions button:first-child {
+  flex: 1;
+  margin-right: 5px;
+  background: linear-gradient(135deg, #4F8EF7, #A78BFA);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-actions button:first-child:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(79,142,247,0.4);
+}
+
+/* CANCEL BUTTON */
+.modal-actions button:last-child {
+  flex: 1;
+  margin-left: 5px;
+  background: #eee;
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-actions button:last-child:hover {
+  background: #ddd;
+}
+
+/* INPUT PLACEHOLDER STYLE */
+.modal-card input::placeholder {
+  color: #999;
+}

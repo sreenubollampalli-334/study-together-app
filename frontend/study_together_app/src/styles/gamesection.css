@@ -1,0 +1,216 @@
+/* 🌌 Base Theme */
+body {
+  background: linear-gradient(135deg, #0f172a, #020617);
+  color: #e2e8f0;
+  font-family: "Inter", sans-serif;
+}
+
+/* 📦 Container */
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* 🧠 Title */
+.title {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: black;
+}
+
+/* ================= TIME SELECT ================= */
+
+.time-select {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.time-select button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #cbd5f5;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.time-select button:hover {
+  background: #1e293b;
+}
+
+.time-select button.active {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+}
+
+/* ================= GAME GRID ================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+/* 🎮 Cards */
+.card-box {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.card-box:hover {
+  transform: translateY(-4px);
+  background: #273549;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* ================= HEADER ================= */
+
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+/* 🔙 Back Button */
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.back-btn:hover {
+  color: #3b82f6;
+  transform: translateX(-3px);
+}
+
+.back-btn:active {
+  transform: scale(0.95);
+}
+
+/* ================= HUD ================= */
+
+.hud {
+  display: flex;
+  gap: 16px;
+  padding: 10px 14px;
+  background: rgba(30, 41, 59, 0.9);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ================= GAME AREA ================= */
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 60px);
+  gap: 10px;
+  justify-content: center;
+}
+
+/* 🧩 Tiles */
+.tile {
+  background: #273549;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.2s;
+}
+
+.tile:hover {
+  transform: scale(1.08);
+  background: #3b82f6;
+}
+
+/* ⚡ Reaction Box */
+.box {
+  width: 220px;
+  height: 220px;
+  margin: 20px auto;
+  border-radius: 14px;
+  transition: 0.2s;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* 📍 Center Layout */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ✏ Inputs */
+input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  margin-top: 10px;
+  background: #020617;
+  color: white;
+  outline: none;
+}
+
+input:focus {
+  border-color: #3b82f6;
+}
+
+/* 🔘 Big Button */
+.big-btn {
+  padding: 16px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.big-btn:hover {
+  background: #2563eb;
+  transform: scale(1.05);
+}
+
+/* ================= SMOOTH ENTRY ================= */
+
+.container {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
