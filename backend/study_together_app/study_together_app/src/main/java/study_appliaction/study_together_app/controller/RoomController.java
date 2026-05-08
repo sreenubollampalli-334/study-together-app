@@ -23,14 +23,17 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(
-        origins = "http://localhost:3000",
-        allowedHeaders = "*",
-        methods = {
-                RequestMethod.GET,
-                RequestMethod.POST,
-                RequestMethod.PUT,
-                RequestMethod.DELETE
-        }
+    origins = {
+        "http://localhost:3000",
+        "https://study-together-app-p79u.vercel.app"
+    },
+    allowedHeaders = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE
+    }
 )
 public class RoomController {
 
@@ -325,10 +328,9 @@ public class RoomController {
                     file.getOriginalFilename()
             );
 
-            msg.setFileUrl(
-                    "http://localhost:8080/uploads/"
-                            + fileName
-            );
+         msg.setFileUrl(
+    "https://study-together-app-1.onrender.com/uploads/" + fileName
+);
 
             return msgRepo.save(msg);
 

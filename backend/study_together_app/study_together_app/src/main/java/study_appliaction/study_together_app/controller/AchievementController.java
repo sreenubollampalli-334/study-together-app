@@ -14,7 +14,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/achievements")
-@CrossOrigin("*")
+@CrossOrigin(
+    origins = {
+        "http://localhost:3000",
+        "https://study-together-app-p79u.vercel.app"
+    },
+    allowedHeaders = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE
+    }
+)
 public class AchievementController {
 
     @Autowired

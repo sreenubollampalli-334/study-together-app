@@ -19,7 +19,19 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/private-messages")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(
+    origins = {
+        "http://localhost:3000",
+        "https://study-together-app-p79u.vercel.app"
+    },
+    allowedHeaders = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE
+    }
+)
 public class PrivateMessageController {
 
     @Autowired
@@ -92,10 +104,9 @@ public class PrivateMessageController {
                     file.getOriginalFilename()
             );
 
-            msg.setFileUrl(
-                    "http://localhost:8080/uploads/" +
-                            fileName
-            );
+          msg.setFileUrl(
+    "https://study-together-app-1.onrender.com/uploads/" + fileName
+);
 
             return repo.save(msg);
 

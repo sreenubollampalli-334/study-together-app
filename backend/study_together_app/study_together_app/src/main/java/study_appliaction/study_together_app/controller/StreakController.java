@@ -6,7 +6,19 @@ import study_appliaction.study_together_app.service.StreakService;
 
 @RestController
 @RequestMapping("/streak")
-@CrossOrigin("*")
+@CrossOrigin(
+    origins = {
+        "http://localhost:3000",
+        "https://study-together-app-p79u.vercel.app"
+    },
+    allowedHeaders = "*",
+    methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE
+    }
+)
 public class StreakController {
 
     @Autowired

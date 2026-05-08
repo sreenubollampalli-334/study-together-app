@@ -20,7 +20,7 @@ public class CorsConfig {
 
                 registry.addMapping("/**")
                         .allowedOrigins(
-                                "http://localhost:3000"
+                                 "https://study-together-app-p79u.vercel.app"
                         )
                         .allowedMethods("*");
             }
