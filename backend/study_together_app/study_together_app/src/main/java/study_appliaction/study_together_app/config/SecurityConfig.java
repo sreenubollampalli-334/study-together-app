@@ -2,8 +2,13 @@ package study_appliaction.study_together_app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+
+import org.springframework.http.HttpMethod;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
 import org.springframework.security.web.*;
+
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -13,42 +18,69 @@ public class SecurityConfig {
     private JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
 
-                // 🔥 IMPORTANT FIX
-                .httpBasic(httpBasic -> httpBasic.disable())
-                .formLogin(form -> form.disable())
+            // ✅ DISABLE CSRF
+            .csrf(csrf -> csrf.disable())
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/profile/**").permitAll()
-                        .requestMatchers("/api/feedback/**").permitAll()
-                        .requestMatchers("/api/rooms/**").permitAll()
-                        .requestMatchers("/api/messages/**").permitAll()
-                        .requestMatchers("/api/private-messages/**").permitAll()
-                        .requestMatchers("/api/feedback/**").permitAll()
-                        .requestMatchers("/achievements/**").permitAll()
-                        .requestMatchers("/streak/**").permitAll()
-                        .requestMatchers("/planner/**").permitAll()
-                        .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers("/topic/**").permitAll()
-                        .requestMatchers("/uploads/**").permitAll()
+            // ✅ ENABLE CORS
+            .cors(cors -> {})
 
+            // ✅ DISABLE LOGIN
+            .httpBasic(httpBasic -> httpBasic.disable())
 
+            .formLogin(form -> form.disable())
 
+            .authorizeHttpRequests(auth -> auth
 
-                        // 🔒 PROTECTED
-                        .requestMatchers("/api/profiles").permitAll()
-                        .requestMatchers("/api/profile/all").permitAll()
-                        .requestMatchers("/api/connections/**").permitAll()
+                // 🔥 VERY IMPORTANT FIX
+                .requestMatchers(
+                        HttpMethod.OPTIONS,
+                        "/**"
+                ).permitAll()
 
-                        .anyRequest().authenticated()
-                )
+                // PUBLIC ROUTES
+                .requestMatchers("/api/auth/**").permitAll()
 
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .requestMatchers("/api/profile/**").permitAll()
+
+                .requestMatchers("/api/feedback/**").permitAll()
+
+                .requestMatchers("/api/rooms/**").permitAll()
+
+                .requestMatchers("/api/messages/**").permitAll()
+
+                .requestMatchers("/api/private-messages/**").permitAll()
+
+                .requestMatchers("/achievements/**").permitAll()
+
+                .requestMatchers("/streak/**").permitAll()
+
+                .requestMatchers("/planner/**").permitAll()
+
+                .requestMatchers("/ws/**").permitAll()
+
+                .requestMatchers("/topic/**").permitAll()
+
+                .requestMatchers("/uploads/**").permitAll()
+
+                .requestMatchers("/api/profiles").permitAll()
+
+                .requestMatchers("/api/profile/all").permitAll()
+
+                .requestMatchers("/api/connections/**").permitAll()
+
+                .anyRequest().authenticated()
+            )
+
+            .addFilterBefore(
+                    jwtFilter,
+                    UsernamePasswordAuthenticationFilter.class
+            );
 
         return http.build();
     }
