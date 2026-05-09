@@ -1,3 +1,5 @@
+// src/pages/Achievements.js
+
 import { useEffect, useState } from "react";
 import api from "../api";
 
@@ -6,13 +8,28 @@ function Achievements() {
   const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ GET EMAIL CORRECTLY
-  const user =
-    JSON.parse(
-      localStorage.getItem("userProfile")
-    );
+  // =========================
+  // GET USER
+  // =========================
 
-  const email = user?.email;
+  const user =
+JSON.parse(
+  localStorage.getItem("userProfile")
+);
+
+console.log("FULL USER:", user);
+
+const email =
+  user?.email ||
+  user?.user?.email ||
+  user?.data?.email;
+
+console.log("FINAL EMAIL:", email);
+
+  console.log(
+    "ACHIEVEMENT EMAIL:",
+    email
+  );
 
   // =========================
   // LOAD ACHIEVEMENTS
@@ -20,34 +37,40 @@ function Achievements() {
 
   const loadAchievements = async () => {
 
-   if (!email) {
+    if (!email) {
 
-  console.error("EMAIL NOT FOUND");
+      console.error(
+        "EMAIL NOT FOUND"
+      );
 
-  setLoading(false);
+      setLoading(false);
 
-  return;
-}
+      return;
+    }
 
     try {
 
-      const res = await api.get(
-       `/achievements/all?email=${email}`
+      const res =
+        await api.get(
+          `/achievements/all?email=${encodeURIComponent(email)}`
+        );
+
+      console.log(
+        "ACHIEVEMENTS:",
+        res.data
       );
 
-      console.log("ACHIEVEMENTS:", res.data);
-
       setBadges(
-  Array.isArray(res.data)
-    ? res.data
-    : []
-);
+        Array.isArray(res.data)
+          ? res.data
+          : []
+      );
 
     } catch (err) {
 
       console.error(
         "ACHIEVEMENT ERROR:",
-        err
+        err.response?.data || err
       );
 
     } finally {
@@ -55,6 +78,10 @@ function Achievements() {
       setLoading(false);
     }
   };
+
+  // =========================
+  // EFFECT
+  // =========================
 
   useEffect(() => {
 
@@ -77,16 +104,21 @@ function Achievements() {
   }, [email]);
 
   // =========================
-  // UI
+  // LOADING
   // =========================
 
   if (loading) {
+
     return (
       <div style={{ padding: "20px" }}>
         Loading Achievements...
       </div>
     );
   }
+
+  // =========================
+  // UI
+  // =========================
 
   return (
 
@@ -103,8 +135,10 @@ function Achievements() {
       <div
         style={{
           display: "grid",
+
           gridTemplateColumns:
             "repeat(auto-fit,minmax(250px,1fr))",
+
           gap: "20px"
         }}
       >
@@ -112,8 +146,14 @@ function Achievements() {
         {badges.map((b, i) => {
 
           const percentage =
+
             b.requiredStreak > 0
-              ? (b.progress / b.requiredStreak) * 100
+
+              ? (
+                  b.progress /
+                  b.requiredStreak
+                ) * 100
+
               : 0;
 
           return (
@@ -123,12 +163,16 @@ function Achievements() {
 
               style={{
                 padding: "20px",
+
                 borderRadius: "15px",
+
                 textAlign: "center",
 
                 background:
                   b.unlocked
+
                     ? "linear-gradient(135deg,#4f8ef7,#6ee7b7)"
+
                     : "#e5e7eb",
 
                 color:
@@ -174,9 +218,13 @@ function Achievements() {
                   <div
                     style={{
                       height: "8px",
+
                       background: "#cbd5e1",
+
                       borderRadius: "10px",
+
                       marginTop: "8px",
+
                       overflow: "hidden"
                     }}
                   >
@@ -184,8 +232,11 @@ function Achievements() {
                     <div
                       style={{
                         width: `${percentage}%`,
+
                         height: "100%",
+
                         background: "#4f8ef7",
+
                         transition: "0.5s"
                       }}
                     />
@@ -198,7 +249,9 @@ function Achievements() {
             </div>
           );
         })}
+
       </div>
+
     </div>
   );
 }
