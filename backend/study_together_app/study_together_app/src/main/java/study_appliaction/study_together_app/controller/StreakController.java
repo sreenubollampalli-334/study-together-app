@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import study_appliaction.study_together_app.service.StreakService;
 
 @RestController
-@RequestMapping("/streak")
+@RequestMapping("/api/streak")
 @CrossOrigin(
     origins = {
         "http://localhost:3000",

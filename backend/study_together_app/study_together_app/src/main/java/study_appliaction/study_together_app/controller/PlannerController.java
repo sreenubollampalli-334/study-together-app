@@ -9,7 +9,7 @@ import study_appliaction.study_together_app.repo.PlannerRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/planner")
+@RequestMapping("/api/planner")
 @CrossOrigin(
         origins = {
                 "http://localhost:3000",

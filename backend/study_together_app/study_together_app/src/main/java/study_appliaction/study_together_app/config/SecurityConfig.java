@@ -56,11 +56,11 @@ public class SecurityConfig {
 
                 .requestMatchers("/api/private-messages/**").permitAll()
 
-                .requestMatchers("/achievements/**").permitAll()
+                .requestMatchers("/api/achievements/**").permitAll()
 
-                .requestMatchers("/streak/**").permitAll()
+                .requestMatchers("/api/streak/**").permitAll()
 
-                .requestMatchers("/planner/**").permitAll()
+                .requestMatchers("/api/planner/**").permitAll()
 
                 .requestMatchers("/ws/**").permitAll()
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/achievements")
+@RequestMapping("/api/achievements")
 @CrossOrigin(
     origins = {
         "http://localhost:3000",
