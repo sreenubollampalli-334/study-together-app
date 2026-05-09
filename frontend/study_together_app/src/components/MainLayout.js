@@ -321,7 +321,8 @@ console.log("FINAL EMAIL:", email);
         "/games",
         "/study",
         "/partners",
-        "/achievements"
+        "/achievements",
+        "/learn-skills"
       ].includes(location.pathname)
 
       &&
