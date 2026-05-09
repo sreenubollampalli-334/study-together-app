@@ -37,7 +37,11 @@ function Achievements() {
 
       console.log("ACHIEVEMENTS:", res.data);
 
-      setBadges(res.data);
+      setBadges(
+  Array.isArray(res.data)
+    ? res.data
+    : []
+);
 
     } catch (err) {
 

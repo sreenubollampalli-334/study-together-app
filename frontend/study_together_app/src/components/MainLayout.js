@@ -1,3 +1,5 @@
+// src/components/MainLayout.js
+
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import ChatBot from "./ChatBot";
@@ -25,13 +27,21 @@ function MainLayout() {
 
   const [profileImage, setProfileImage] = useState("");
 
-  // ✅ FIXED EMAIL
-  const user =
-  JSON.parse(
-    localStorage.getItem("userProfile")
-  );
+  // =========================
+  // USER
+  // =========================
 
-const email = user?.email;
+  const user =
+    JSON.parse(
+      localStorage.getItem("userProfile")
+    );
+
+  const email = user?.email;
+
+  console.log(
+    "MAINLAYOUT EMAIL:",
+    email
+  );
 
   // =========================
   // THEME
@@ -84,26 +94,34 @@ const email = user?.email;
 
   useEffect(() => {
 
-    if (email) {
+    const fetchStreak = async () => {
 
-      api.get(
-        `/streak/get?email=${email}`
-      )
+      try {
 
-      .then(res => {
+        if (!email) return;
+
+        const res =
+          await api.get(
+            `/streak/get?email=${encodeURIComponent(email)}`
+          );
+
+        console.log(
+          "FETCH STREAK:",
+          res.data
+        );
 
         setStreak(res.data);
 
-      })
-
-      .catch(err => {
+      } catch (err) {
 
         console.error(
           "GET STREAK ERROR:",
-          err
+          err.response?.data || err
         );
-      });
-    }
+      }
+    };
+
+    fetchStreak();
 
   }, [email]);
 
@@ -113,19 +131,38 @@ const email = user?.email;
 
   const updateStreak = async () => {
 
-    if (!email) return;
-
     try {
+
+      const storedUser =
+        JSON.parse(
+          localStorage.getItem(
+            "userProfile"
+          )
+        );
+
+      const freshEmail =
+        storedUser?.email;
+
+      console.log(
+        "UPDATING FOR:",
+        freshEmail
+      );
+
+      if (!freshEmail) return;
 
       const res =
         await api.post(
-          `/streak/update?email=${email}`
+          `/streak/update?email=${encodeURIComponent(freshEmail)}`
         );
 
-      // ✅ UPDATE UI
+      console.log(
+        "NEW STREAK:",
+        res.data
+      );
+
       setStreak(res.data);
 
-      // ✅ REFRESH ACHIEVEMENTS
+      // 🔥 REFRESH ACHIEVEMENTS
       window.dispatchEvent(
         new Event("streakUpdated")
       );
@@ -134,7 +171,7 @@ const email = user?.email;
 
       console.error(
         "UPDATE STREAK ERROR:",
-        err
+        err.response?.data || err
       );
     }
   };
@@ -147,40 +184,44 @@ const email = user?.email;
 
     let timer;
 
-    if (isRunning && time > 0) {
+    if (isRunning) {
 
       timer = setInterval(() => {
 
-        setTime(prev =>
-          Math.max(prev - 1, 0)
-        );
+        setTime(prev => {
+
+          if (prev <= 1) {
+
+            clearInterval(timer);
+
+            setIsRunning(false);
+
+            // 🔥 UPDATE STREAK
+            updateStreak();
+
+            setTimeout(() => {
+
+              alert(
+                "🎉 Session Completed!"
+              );
+
+              setTime(minutes * 60);
+
+            }, 100);
+
+            return 0;
+          }
+
+          return prev - 1;
+
+        });
 
       }, 1000);
     }
 
-    // ✅ SESSION COMPLETE
-    if (time === 0 && isRunning) {
+    return () => clearInterval(timer);
 
-      setIsRunning(false);
-
-      // 🔥 UPDATE STREAK
-      updateStreak();
-
-      setTimeout(() => {
-
-        alert(
-          "🎉 Session Completed!"
-        );
-
-        setTime(minutes * 60);
-
-      }, 100);
-    }
-
-    return () =>
-      clearInterval(timer);
-
-  }, [isRunning, time]);
+  }, [isRunning, minutes]);
 
   // =========================
   // RESET TIMER
@@ -263,255 +304,16 @@ const email = user?.email;
       path: "/achievements"
     },
 
-   {
-  icon: "🚀",
-  label: "Learn Skills",
-  path: "/learn-skills"
-}
+    {
+      icon: "🚀",
+      label: "Learn Skills",
+      path: "/learn-skills"
+    }
   ];
 
   return (
     <>
-
-      {![
-        "/planner",
-        "/feedback",
-        "/messages",
-        "/rooms",
-        "/games",
-        "/study",
-        "/partners",
-        "/achievements"
-      ].includes(location.pathname)
-
-      &&
-
-      !location.pathname.startsWith("/chat")
-
-      &&
-
-      <ChatBot />}
-
-      <div
-        style={{
-          display: "flex",
-          minHeight: "100vh"
-        }}
-      >
-
-        {/* SIDEBAR */}
-
-        <div className="sidebar">
-
-          {menu.map((item, index) => (
-
-            <div
-              key={index}
-
-              onClick={() =>
-                navigate(item.path)
-              }
-
-              className={`sidebar-item ${
-                location.pathname === item.path
-                  ? "active"
-                  : ""
-              }`}
-            >
-
-              <span className="icon">
-                {item.icon}
-              </span>
-
-              <span className="label">
-                {item.label}
-              </span>
-
-            </div>
-          ))}
-
-        </div>
-
-        {/* MAIN */}
-
-        <div style={{ flex: 1 }}>
-
-          {/* TOPBAR */}
-
-          <div
-            style={{
-              height: "70px",
-
-              background:
-                dark
-                  ? "#1e293b"
-                  : "#ffffff",
-
-              color:
-                dark
-                  ? "#e2e8f0"
-                  : "#1e293b",
-
-              display: "flex",
-
-              justifyContent:
-                "space-between",
-
-              alignItems: "center",
-
-              padding: "0 20px",
-
-              boxShadow:
-                "0 4px 10px rgba(0,0,0,0.05)",
-
-              borderRadius: "10px",
-
-              margin: "10px",
-
-              transition: "0.3s"
-            }}
-          >
-
-            {/* TIMER */}
-
-            <div>
-
-              <div className="timer-box">
-
-                <input
-                  type="number"
-
-                  value={minutes}
-
-                  onChange={(e) =>
-                    setMinutes(
-                      Math.max(
-                        1,
-                        Number(
-                          e.target.value
-                        )
-                      )
-                    )
-                  }
-
-                  className="timer-input"
-                />
-
-                <span className="timer-display">
-                  ⏱️ {formatTime()}
-                </span>
-
-                <button
-                  onClick={() =>
-                    setIsRunning(
-                      !isRunning
-                    )
-                  }
-
-                  className={`timer-btn ${
-                    isRunning
-                      ? "stop"
-                      : "start"
-                  }`}
-                >
-                  {isRunning
-                    ? "Pause"
-                    : "Start"}
-                </button>
-
-                <button
-                  onClick={() =>
-                    setTime(
-                      minutes * 60
-                    )
-                  }
-
-                  className="timer-btn reset"
-                >
-                  Reset
-                </button>
-
-                {/* 🔥 STREAK */}
-
-                <span className="timer-stat">
-                  🔥 {streak}
-                </span>
-
-              </div>
-
-              {isRunning && (
-
-                <div className="progress-container">
-
-                  <div
-                    className="progress-bar"
-
-                    style={{
-                      width: `${progress}%`
-                    }}
-                  ></div>
-
-                </div>
-              )}
-
-            </div>
-
-            {/* THEME */}
-
-            <div
-              onClick={() =>
-                setDark(prev => !prev)
-              }
-
-              className="theme-toggle"
-            >
-
-              <div
-                className={`toggle-circle ${
-                  dark ? "dark" : ""
-                }`}
-              >
-
-                {dark ? "🌙" : "🌞"}
-
-              </div>
-
-            </div>
-
-            {/* PROFILE */}
-
-            <img
-              src={
-                profileImage ||
-                "https://via.placeholder.com/40"
-              }
-
-              alt="profile"
-
-              onClick={() =>
-                navigate("/feedback")
-              }
-
-              style={{
-                width: "35px",
-                height: "35px",
-                borderRadius: "50%",
-                cursor: "pointer",
-                border:
-                  "2px solid #4F8EF7",
-              }}
-            />
-
-          </div>
-
-          <div style={{ padding: "20px" }}>
-            <Outlet />
-          </div>
-
-        </div>
-
-      </div>
-
+      <Outlet />
     </>
   );
 }
