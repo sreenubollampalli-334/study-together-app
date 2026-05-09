@@ -1,10 +1,9 @@
 package study_appliaction.study_together_app.entity;
 
-
-
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "planner_task")
 public class PlannerTask {
 
     @Id
@@ -23,7 +22,9 @@ public class PlannerTask {
 
     private boolean notified;
 
-    // GETTERS AND SETTERS
+    // =========================
+    // GETTERS & SETTERS
+    // =========================
 
     public Long getId() {
         return id;
