@@ -87,7 +87,7 @@ const email = user?.email;
     if (email) {
 
       api.get(
-        `/streak/get?email=${email}`
+        `/api/streak/get?email=${email}`
       )
 
       .then(res => {
@@ -119,7 +119,7 @@ const email = user?.email;
 
       const res =
         await api.post(
-          `/streak/update?email=${email}`
+          `/api/streak/update?email=${email}`
         );
 
       // ✅ UPDATE UI
@@ -263,11 +263,11 @@ const email = user?.email;
       path: "/achievements"
     },
 
-    {
-      icon: "🎮",
-      label: "Games",
-      path: "/games"
-    }
+   {
+  icon: "🚀",
+  label: "Learn Skills",
+  path: "/learn-skills"
+}
   ];
 
   return (

@@ -16,6 +16,7 @@ import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Achievements from "./components/Achievements";
 import NotificationListener from "./components/NotificationListener";
+import LearnSkills from "./components/LearnSkills";
 
 // ✅ Token validation
 function isValidToken(token) {
@@ -95,7 +96,10 @@ function App() {
             path="dashboard"
             element={<Home />}
           />
-
+<Route
+  path="/learn-skills"
+  element={<LearnSkills />}
+/>
           {/* CHAT */}
           <Route
             path="chat/:email"

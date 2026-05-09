@@ -20,15 +20,19 @@ function Achievements() {
 
   const loadAchievements = async () => {
 
-    if (!email) {
-      console.error("EMAIL NOT FOUND");
-      return;
-    }
+   if (!email) {
+
+  console.error("EMAIL NOT FOUND");
+
+  setLoading(false);
+
+  return;
+}
 
     try {
 
       const res = await api.get(
-        `/achievements/all?email=${email}`
+       `/api/achievements/all?email=${email}`
       );
 
       console.log("ACHIEVEMENTS:", res.data);
