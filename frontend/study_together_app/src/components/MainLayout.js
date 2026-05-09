@@ -26,8 +26,12 @@ function MainLayout() {
   const [profileImage, setProfileImage] = useState("");
 
   // ✅ FIXED EMAIL
-  const email =
-    localStorage.getItem("email");
+  const user =
+  JSON.parse(
+    localStorage.getItem("userProfile")
+  );
+
+const email = user?.email;
 
   // =========================
   // THEME

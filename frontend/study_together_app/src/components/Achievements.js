@@ -4,105 +4,192 @@ import api from "../api";
 function Achievements() {
 
   const [badges, setBadges] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ FIXED
-  const email = localStorage.getItem("email");
+  // ✅ GET EMAIL CORRECTLY
+  const user =
+    JSON.parse(
+      localStorage.getItem("userProfile")
+    );
 
- useEffect(() => {
+  const email = user?.email;
 
-  const loadAchievements = () => {
+  // =========================
+  // LOAD ACHIEVEMENTS
+  // =========================
 
-    if (email) {
+  const loadAchievements = async () => {
 
-      api.get(
+    if (!email) {
+      console.error("EMAIL NOT FOUND");
+      return;
+    }
+
+    try {
+
+      const res = await api.get(
         `/achievements/all?email=${email}`
-      )
+      );
 
-      .then(res => {
+      console.log("ACHIEVEMENTS:", res.data);
 
-        setBadges(res.data);
+      setBadges(res.data);
 
-      })
+    } catch (err) {
 
-      .catch(err => {
+      console.error(
+        "ACHIEVEMENT ERROR:",
+        err
+      );
 
-        console.error(err);
-      });
+    } finally {
+
+      setLoading(false);
     }
   };
 
-  // INITIAL LOAD
-  loadAchievements();
+  useEffect(() => {
 
-  // 🔥 AUTO REFRESH
-  window.addEventListener(
-    "streakUpdated",
-    loadAchievements
-  );
+    loadAchievements();
 
-  return () => {
-
-    window.removeEventListener(
+    // 🔥 AUTO REFRESH
+    window.addEventListener(
       "streakUpdated",
       loadAchievements
     );
-  };
 
-}, [email]);
+    return () => {
+
+      window.removeEventListener(
+        "streakUpdated",
+        loadAchievements
+      );
+    };
+
+  }, [email]);
+
+  // =========================
+  // UI
+  // =========================
+
+  if (loading) {
+    return (
+      <div style={{ padding: "20px" }}>
+        Loading Achievements...
+      </div>
+    );
+  }
 
   return (
+
     <div style={{ padding: "20px" }}>
-      <h2>🏆 Achievements</h2>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3,1fr)",
-        gap: "20px"
-      }}>
-        {badges.map((b, i) => (
-          <div key={i} style={{
-            padding: "20px",
-            borderRadius: "12px",
-            textAlign: "center",
-            background: b.unlocked
-              ? "linear-gradient(135deg,#4f8ef7,#6ee7b7)"
-              : "#ddd",
-            color: b.unlocked ? "white" : "#555"
-          }}>
+      <h2
+        style={{
+          marginBottom: "20px"
+        }}
+      >
+        🏆 Achievements
+      </h2>
 
-            {/* ICON */}
-            <div style={{ fontSize: "30px" }}>
-              {b.unlocked ? b.icon : "🔒"}
-            </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(250px,1fr))",
+          gap: "20px"
+        }}
+      >
 
-            <h3>{b.name}</h3>
-            <p>{b.description}</p>
+        {badges.map((b, i) => {
 
-            {/* 🔥 PROGRESS BAR */}
-            {!b.unlocked && (
-              <div style={{ marginTop: "10px" }}>
-                <small>
-                  {b.progress} / {b.requiredStreak}
-                </small>
+          const percentage =
+            b.requiredStreak > 0
+              ? (b.progress / b.requiredStreak) * 100
+              : 0;
 
-                <div style={{
-                  height: "6px",
-                  background: "#ccc",
-                  borderRadius: "5px",
-                  marginTop: "5px"
-                }}>
-                  <div style={{
-                    width: `${(b.progress / b.requiredStreak) * 100}%`,
-                    height: "100%",
-                    background: "#4f8ef7",
-                    borderRadius: "5px"
-                  }} />
-                </div>
+          return (
+
+            <div
+              key={i}
+
+              style={{
+                padding: "20px",
+                borderRadius: "15px",
+                textAlign: "center",
+
+                background:
+                  b.unlocked
+                    ? "linear-gradient(135deg,#4f8ef7,#6ee7b7)"
+                    : "#e5e7eb",
+
+                color:
+                  b.unlocked
+                    ? "white"
+                    : "#374151",
+
+                boxShadow:
+                  "0 4px 10px rgba(0,0,0,0.1)"
+              }}
+            >
+
+              <div
+                style={{
+                  fontSize: "40px"
+                }}
+              >
+                {b.unlocked
+                  ? b.icon
+                  : "🔒"}
               </div>
-            )}
 
-          </div>
-        ))}
+              <h3>{b.name}</h3>
+
+              <p>
+                {b.description}
+              </p>
+
+              {!b.unlocked && (
+
+                <div
+                  style={{
+                    marginTop: "15px"
+                  }}
+                >
+
+                  <small>
+                    {b.progress}
+                    /
+                    {b.requiredStreak}
+                  </small>
+
+                  <div
+                    style={{
+                      height: "8px",
+                      background: "#cbd5e1",
+                      borderRadius: "10px",
+                      marginTop: "8px",
+                      overflow: "hidden"
+                    }}
+                  >
+
+                    <div
+                      style={{
+                        width: `${percentage}%`,
+                        height: "100%",
+                        background: "#4f8ef7",
+                        transition: "0.5s"
+                      }}
+                    />
+
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+          );
+        })}
       </div>
     </div>
   );

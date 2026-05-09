@@ -18,37 +18,67 @@ public class StreakService {
 
     public int updateStreak(String email) {
 
-        Streak streak = streakRepository.findByEmail(email)
-                .orElseGet(() -> {
-                    Streak s = new Streak();
-                    s.setEmail(email);
-                    return s;
-                });
+        if (email == null || email.isEmpty()) {
+            return 0;
+        }
+
+        Streak streak = streakRepository
+                .findByEmail(email)
+                .orElse(new Streak());
+
+        if (streak.getEmail() == null) {
+            streak.setEmail(email);
+            streak.setCurrentStreak(0);
+        }
 
         LocalDate today = LocalDate.now();
         LocalDate last = streak.getLastActiveDate();
 
+        // FIRST LOGIN
         if (last == null) {
+
             streak.setCurrentStreak(1);
+
         }
+
+        // CONTINUE STREAK
         else if (last.equals(today.minusDays(1))) {
-            streak.setCurrentStreak(streak.getCurrentStreak() + 1);
+
+            streak.setCurrentStreak(
+                    streak.getCurrentStreak() + 1
+            );
+
         }
-        else if (!last.equals(today)) {
+
+        // SAME DAY
+        else if (last.equals(today)) {
+
+            return streak.getCurrentStreak();
+        }
+
+        // STREAK BROKEN
+        else {
+
             streak.setCurrentStreak(1);
         }
 
         streak.setLastActiveDate(today);
+
         streakRepository.save(streak);
 
-        // 🔥 Achievement unlock
-        achievementService.unlockAchievements(email, streak.getCurrentStreak());
+        // 🔥 UNLOCK ACHIEVEMENTS
+        achievementService.unlockAchievements(
+                email,
+                streak.getCurrentStreak()
+        );
 
         return streak.getCurrentStreak();
     }
 
     public int getStreak(String email) {
-        return streakRepository.findByEmail(email)
+
+        return streakRepository
+                .findByEmail(email)
                 .map(Streak::getCurrentStreak)
                 .orElse(0);
     }
