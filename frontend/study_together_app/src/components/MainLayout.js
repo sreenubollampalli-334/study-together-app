@@ -87,7 +87,7 @@ const email = user?.email;
     if (email) {
 
       api.get(
-        `/api/streak/get?email=${email}`
+        `/streak/get?email=${email}`
       )
 
       .then(res => {
@@ -119,7 +119,7 @@ const email = user?.email;
 
       const res =
         await api.post(
-          `/api/streak/update?email=${email}`
+          `/streak/update?email=${email}`
         );
 
       // ✅ UPDATE UI

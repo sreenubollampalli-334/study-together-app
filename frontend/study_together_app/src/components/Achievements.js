@@ -32,7 +32,7 @@ function Achievements() {
     try {
 
       const res = await api.get(
-       `/api/achievements/all?email=${email}`
+       `/achievements/all?email=${email}`
       );
 
       console.log("ACHIEVEMENTS:", res.data);
