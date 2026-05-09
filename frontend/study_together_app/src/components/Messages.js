@@ -267,7 +267,7 @@ function Messages() {
                     deleteMessage(m.id)
                   }
                 >
-                  🗑 Delete
+                   Delete
                 </button>
 
               )}

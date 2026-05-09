@@ -1,12 +1,18 @@
 import { useState, useEffect } from "react";
 import "../styles/planner.css";
-
 import api from "../api";
 
 function Planner() {
 
-  const days =
-    ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  const days = [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
+    "Sun"
+  ];
 
   const [activeDay, setActiveDay] =
     useState("Mon");
@@ -20,6 +26,9 @@ function Planner() {
   const [showModal, setShowModal] =
     useState(false);
 
+  const [loading, setLoading] =
+    useState(false);
+
   const [newTask, setNewTask] =
     useState({
       title: "",
@@ -29,75 +38,184 @@ function Planner() {
       notified: false
     });
 
+  // =========================
   // FETCH TASKS
+  // =========================
+
   const fetchTasks = async () => {
 
-    const res =
-      await api.get("/planner");
+    try {
 
-    setTasks(res.data);
+      const res =
+        await api.get("/planner");
+
+      console.log(
+        "TASKS:",
+        res.data
+      );
+
+      setTasks(res.data);
+
+    } catch (err) {
+
+      console.error(
+        "FETCH TASK ERROR:",
+        err
+      );
+    }
   };
 
   useEffect(() => {
 
     fetchTasks();
 
-    if (Notification.permission !== "granted") {
+    if (
+      Notification.permission !==
+      "granted"
+    ) {
+
       Notification.requestPermission();
     }
 
   }, []);
 
+  // =========================
   // ADD TASK
+  // =========================
+
   const addTask = async () => {
 
-    if (!newTask.title || !newTask.time)
+    if (
+      !newTask.title ||
+      !newTask.time
+    ) {
+
+      alert(
+        "Please fill all fields"
+      );
+
       return;
+    }
 
-    await api.post("/planner", {
-      ...newTask,
-      day: activeDay
-    });
+    try {
 
-    fetchTasks();
+      setLoading(true);
 
-    setNewTask({
-      title: "",
-      priority: "Medium",
-      time: "",
-      status: "in-progress",
-      notified: false
-    });
+      const payload = {
+        ...newTask,
+        day: activeDay
+      };
 
-    setShowModal(false);
+      console.log(
+        "ADDING TASK:",
+        payload
+      );
+
+      const res =
+        await api.post(
+          "/planner",
+          payload
+        );
+
+      console.log(
+        "ADD SUCCESS:",
+        res.data
+      );
+
+      // REFRESH TASKS
+      await fetchTasks();
+
+      // RESET FORM
+      setNewTask({
+        title: "",
+        priority: "Medium",
+        time: "",
+        status: "in-progress",
+        notified: false
+      });
+
+      setShowModal(false);
+
+    } catch (err) {
+
+      console.error(
+        "ADD TASK ERROR:",
+        err
+      );
+
+      alert(
+        "Failed to add task"
+      );
+
+    } finally {
+
+      setLoading(false);
+    }
   };
 
+  // =========================
   // COMPLETE TASK
-  const toggleComplete = async (task) => {
+  // =========================
 
-    await api.put(
-      `/planner/${task.id}`,
-      {
-        ...task,
-        status:
-          task.status === "complete"
-            ? "in-progress"
-            : "complete"
-      }
-    );
+  const toggleComplete =
+    async (task) => {
 
-    fetchTasks();
+    try {
+
+      await api.put(
+        `/planner/${task.id}`,
+        {
+          ...task,
+
+          status:
+            task.status ===
+            "complete"
+
+              ? "in-progress"
+
+              : "complete"
+        }
+      );
+
+      fetchTasks();
+
+    } catch (err) {
+
+      console.error(
+        "UPDATE ERROR:",
+        err
+      );
+    }
   };
 
+  // =========================
   // DELETE TASK
-  const deleteTask = async (id) => {
+  // =========================
 
-    await api.delete(`/planner/${id}`);
+  const deleteTask =
+    async (id) => {
 
-    fetchTasks();
+    try {
+
+      await api.delete(
+        `/planner/${id}`
+      );
+
+      fetchTasks();
+
+    } catch (err) {
+
+      console.error(
+        "DELETE ERROR:",
+        err
+      );
+    }
   };
 
+  // =========================
   // FILTER TASKS
+  // =========================
+
   const filteredTasks =
     tasks.filter(task => {
 
@@ -105,8 +223,11 @@ function Planner() {
         task.day === activeDay;
 
       const sameTab =
+
         tab === "all"
+
           ? true
+
           : task.status === tab;
 
       return sameDay && sameTab;
@@ -118,73 +239,108 @@ function Planner() {
 
       <h2>📅 Study Planner</h2>
 
+      {/* DAYS */}
+
       <div className="date-row">
 
         {days.map((d) => (
 
           <div
             key={d}
+
             className={
               activeDay === d
+
                 ? "date active"
+
                 : "date"
             }
-            onClick={() => setActiveDay(d)}
+
+            onClick={() =>
+              setActiveDay(d)
+            }
           >
+
             {d}
+
           </div>
 
         ))}
 
       </div>
 
+      {/* TABS */}
+
       <div className="tabs">
 
-        {["all","in-progress","complete"]
-          .map(t => (
+        {[
+          "all",
+          "in-progress",
+          "complete"
+        ].map(t => (
 
           <span
             key={t}
+
             className={
               tab === t
+
                 ? "tab active"
+
                 : "tab"
             }
-            onClick={() => setTab(t)}
+
+            onClick={() =>
+              setTab(t)
+            }
           >
+
             {t}
+
           </span>
 
         ))}
 
       </div>
 
+      {/* TASK LIST */}
+
       <div className="task-list">
 
         {filteredTasks.length === 0 && (
+
           <p className="empty">
+
             No tasks. Click ➕
+
           </p>
         )}
 
-        {filteredTasks.map((task) => (
+        {filteredTasks.map(task => (
 
           <div
             key={task.id}
+
             className={`task-card ${task.status}`}
           >
 
-            <h3>{task.title}</h3>
+            <h3>
+              {task.title}
+            </h3>
 
             <div className="task-footer">
 
               <span
                 className={`priority ${task.priority.toLowerCase()}`}
               >
+
                 {task.priority}
+
               </span>
 
-              <span>⏰ {task.time}</span>
+              <span>
+                ⏰ {task.time}
+              </span>
 
             </div>
 
@@ -196,8 +352,11 @@ function Planner() {
                 }
               >
 
-                {task.status === "complete"
+                {task.status ===
+                "complete"
+
                   ? "↩ Undo"
+
                   : "✔ Done"}
 
               </button>
@@ -207,7 +366,9 @@ function Planner() {
                   deleteTask(task.id)
                 }
               >
+
                 🗑
+
               </button>
 
             </div>
@@ -218,12 +379,21 @@ function Planner() {
 
       </div>
 
+      {/* FLOAT BUTTON */}
+
       <button
         className="fab"
-        onClick={() => setShowModal(true)}
+
+        onClick={() =>
+          setShowModal(true)
+        }
       >
+
         +
+
       </button>
+
+      {/* MODAL */}
 
       {showModal && (
 
@@ -231,25 +401,32 @@ function Planner() {
 
           <div className="modal-card">
 
-            <h3>Add Task ({activeDay})</h3>
+            <h3>
+              Add Task ({activeDay})
+            </h3>
 
             <input
               placeholder="Task Name"
+
               value={newTask.title}
+
               onChange={(e) =>
                 setNewTask({
                   ...newTask,
-                  title: e.target.value
+                  title:
+                    e.target.value
                 })
               }
             />
 
             <select
               value={newTask.priority}
+
               onChange={(e) =>
                 setNewTask({
                   ...newTask,
-                  priority: e.target.value
+                  priority:
+                    e.target.value
                 })
               }
             >
@@ -270,19 +447,30 @@ function Planner() {
 
             <input
               type="time"
+
               value={newTask.time}
+
               onChange={(e) =>
                 setNewTask({
                   ...newTask,
-                  time: e.target.value
+                  time:
+                    e.target.value
                 })
               }
             />
 
             <div className="modal-actions">
 
-              <button onClick={addTask}>
-                Add
+              <button
+                onClick={addTask}
+
+                disabled={loading}
+              >
+
+                {loading
+                  ? "Adding..."
+                  : "Add"}
+
               </button>
 
               <button
@@ -290,7 +478,9 @@ function Planner() {
                   setShowModal(false)
                 }
               >
+
                 Cancel
+
               </button>
 
             </div>

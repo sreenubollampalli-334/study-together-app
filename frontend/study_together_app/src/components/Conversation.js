@@ -324,7 +324,7 @@ function Conversation() {
                   deleteMessage(msg.id)
                 }
               >
-                🗑 Delete
+                Delete
               </button>
 
             )}
